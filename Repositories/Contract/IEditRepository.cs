@@ -22,8 +22,8 @@ namespace Common.Repositories.Contract
         /// </summary>
         /// <typeparam name="TProperty">Тип свойства сущности</typeparam>
         /// <param name="entity">Сущность</param>
-        /// <param name="property">Свойство</param>
-        void Modified<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> property);
+        /// <param name="expressions">Свойства</param>
+        void Modified<TProperty>(TEntity entity, params Expression<Func<TEntity, object>>[] expressions);
 
         /// <summary>
         /// Обновить граф сущности
