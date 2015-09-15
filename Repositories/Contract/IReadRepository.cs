@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Common.Models.Dto;
-using Common.Models.Filters;
+using Common.Dto;
+using Common.Filters;
 
 namespace Common.Repositories.Contract
 {
     /// <summary>
     /// Интерфейс хранилища чтения
     /// </summary>
-    /// <typeparam name="TEntity">Сущьность</typeparam>
-    /// <typeparam name="TFilter">Фильтр</typeparam>
+    /// <typeparam name="TEntity">Тип сущьности</typeparam>
+    /// <typeparam name="TFilter">Тип фильтра</typeparam>
     public interface IReadRepository<TEntity, in TFilter>
         where TEntity : class
         where TFilter : BaseFilter

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Common.Dto;
 using Common.Facades.Contract;
-using Common.Models.Dto;
-using Common.Models.Filters;
+using Common.Filters;
 using Common.Services.Contract;
 using Common.Utilites;
 

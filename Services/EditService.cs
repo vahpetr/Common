@@ -9,8 +9,8 @@ namespace Common.Services
     /// <summary>
     /// Базовый сервис редактирования данных
     /// </summary>
-    /// <typeparam name="TEntity">Сущность</typeparam>
-    /// <typeparam name="TEditRepository"></typeparam>
+    /// <typeparam name="TEntity">Тип сущьности</typeparam>
+    /// <typeparam name="TEditRepository">Тип хранилища редактирования</typeparam>
     public class EditService<TEntity, TEditRepository> : IEditService<TEntity>
         where TEntity : class
         where TEditRepository : IEditRepository<TEntity>

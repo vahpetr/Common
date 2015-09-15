@@ -132,6 +132,7 @@ namespace Common.Utilites
         /// </summary>
         /// <param name="obj">Объект</param>
         /// <param name="target">Тип</param>
+        /// <param name="references">Проверенные ссылки</param>
         public static void CleanPropertyByType(object obj, Type target, List<object> references = null)
         {
             if (references == null) references = new List<object>();

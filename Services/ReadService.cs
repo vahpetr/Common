@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Common.Models.Dto;
-using Common.Models.Filters;
+using Common.Dto;
+using Common.Filters;
 using Common.Repositories.Contract;
 using Common.Services.Contract;
 
@@ -12,9 +12,9 @@ namespace Common.Services
     /// <summary>
     /// Базовый сервис чтения данных
     /// </summary>
-    /// <typeparam name="TEntity">Сущность контекста</typeparam>
-    /// <typeparam name="TFilter">Фильтр сущностей</typeparam>
-    /// <typeparam name="TReadRepository"></typeparam>
+    /// <typeparam name="TEntity">Тип сущьности</typeparam>
+    /// <typeparam name="TFilter">Тип фильтра</typeparam>
+    /// <typeparam name="TReadRepository">Тип хранилища чтения</typeparam>
     public class ReadService<TEntity, TFilter, TReadRepository> : IReadService<TEntity, TFilter>
         where TEntity : class
         where TFilter : BaseFilter

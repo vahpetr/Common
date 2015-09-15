@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Common.Models.Dto;
-using Common.Models.Filters;
+using Common.Dto;
+using Common.Filters;
 
 namespace Common.Facades.Contract
 {

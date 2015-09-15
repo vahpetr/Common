@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Common.Models.Dto
+namespace Common.Dto
 {
     /// <summary>
     /// Результат

@@ -1,51 +1,51 @@
-using System;
+п»їusing System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Common.Repositories.Contract
 {
     /// <summary>
-    /// Интерфейс храналища редактирования данных
+    /// РРЅС‚РµСЂС„РµР№СЃ С…СЂР°РЅР°Р»РёС‰Р° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РґР°РЅРЅС‹С…
     /// </summary>
-    /// <typeparam name="TEntity">Сущьность</typeparam>
+    /// <typeparam name="TEntity">РўРёРї СЃСѓС‰СЊРЅРѕСЃС‚РёС‚</typeparam>
     public interface IEditRepository<TEntity>
         where TEntity : class
     {
         /// <summary>
-        /// Добавить граф сущности
+        /// Р”РѕР±Р°РІРёС‚СЊ РіСЂР°С„ СЃСѓС‰РЅРѕСЃС‚Рё
         /// </summary>
-        /// <param name="entity">Новаый граф сущности</param>
+        /// <param name="entity">РќРѕРІР°С‹Р№ РіСЂР°С„ СЃСѓС‰РЅРѕСЃС‚Рё</param>
         void Add(TEntity entity);
 
         /// <summary>
-        /// Пометить свойство сущьности как изменённое
+        /// РџРѕРјРµС‚РёС‚СЊ СЃРІРѕР№СЃС‚РІРѕ СЃСѓС‰СЊРЅРѕСЃС‚Рё РєР°Рє РёР·РјРµРЅС‘РЅРЅРѕРµ
         /// </summary>
-        /// <param name="entity">Сущность</param>
-        /// <param name="expressions">Свойства</param>
+        /// <param name="entity">РЎСѓС‰РЅРѕСЃС‚СЊ</param>
+        /// <param name="expressions">РЎРІРѕР№СЃС‚РІР°</param>
         void Modified(TEntity entity, params Expression<Func<TEntity, object>>[] expressions);
 
         /// <summary>
-        /// Обновить граф сущности
+        /// РћР±РЅРѕРІРёС‚СЊ РіСЂР°С„ СЃСѓС‰РЅРѕСЃС‚Рё
         /// </summary>
-        /// <param name="entity">Обновляемый граф сущности</param>
+        /// <param name="entity">РћР±РЅРѕРІР»СЏРµРјС‹Р№ РіСЂР°С„ СЃСѓС‰РЅРѕСЃС‚Рё</param>
         void Update(TEntity entity);
 
         /// <summary>
-        /// Удалить сущность
+        /// РЈРґР°Р»РёС‚СЊ СЃСѓС‰РЅРѕСЃС‚СЊ
         /// </summary>
-        /// <param name="entity">Сущность</param>
+        /// <param name="entity">РЎСѓС‰РЅРѕСЃС‚СЊ</param>
         void Remove(TEntity entity);
 
         /// <summary>
-        /// Сохранить все изменения
+        /// РЎРѕС…СЂР°РЅРёС‚СЊ РІСЃРµ РёР·РјРµРЅРµРЅРёСЏ
         /// </summary>
-        /// <returns>Количество изменённых строк в базе</returns>
+        /// <returns>РљРѕР»РёС‡РµСЃС‚РІРѕ РёР·РјРµРЅС‘РЅРЅС‹С… СЃС‚СЂРѕРє РІ Р±Р°Р·Рµ</returns>
         int SaveChanges();
 
         /// <summary>
-        /// Асинхронно сохранить все изменения
+        /// РђСЃРёРЅС…СЂРѕРЅРЅРѕ СЃРѕС…СЂР°РЅРёС‚СЊ РІСЃРµ РёР·РјРµРЅРµРЅРёСЏ
         /// </summary>
-        /// <returns>Количество изменённых строк в базе</returns>
+        /// <returns>РљРѕР»РёС‡РµСЃС‚РІРѕ РёР·РјРµРЅС‘РЅРЅС‹С… СЃС‚СЂРѕРє РІ Р±Р°Р·Рµ</returns>
         Task<int> SaveChangesAsync();
     }
 }

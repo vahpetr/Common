@@ -1,4 +1,4 @@
-﻿namespace Common.Models.Enums
+﻿namespace Common.Enums
 {
     /// <summary>
     /// Направление сортировки

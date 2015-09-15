@@ -1,31 +1,37 @@
-﻿using Common.Models.Enums;
+﻿using Common.Enums;
 
-namespace Common.Models.Filters
+namespace Common.Filters
 {
     /// <summary>
     /// Базовый фильтр
     /// </summary>
     public class BaseFilter : PagingFilter
     {
-        private string sort;
+        private string _sortBy;
 
         public BaseFilter()
         {
-            Sort = "Position";
-            Order = Order.Asc;
+            SortBy = "Position";
+            Order = Order.Desc;
         }
 
         /// <summary>
         /// Сортировать по
         /// </summary>
-        public string Sort
+        public string SortBy
         {
             get
             {
-                return sort;
+                return _sortBy;
             }
             set
             {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    _sortBy = "Position";
+                    return;
+                }
+
                 //http://www.dotnetperls.com/uppercase-first-letter
                 var array = value.ToCharArray();
                 // Handle the first letter in the string.
@@ -46,7 +52,7 @@ namespace Common.Models.Filters
                         array[i] = char.ToUpper(array[i]);
                     }
                 }
-                sort = new string(array);
+                _sortBy = new string(array);
             }
         }
 

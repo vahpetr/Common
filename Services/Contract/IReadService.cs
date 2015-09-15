@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Common.Models.Dto;
+using Common.Dto;
 
 namespace Common.Services.Contract
 {
     /// <summary>
     /// Интерфейс сервиса чтения
     /// </summary>
-    /// <typeparam name="TEntity">Сущьность</typeparam>
-    /// <typeparam name="TFilter">Фильтр</typeparam>
+    /// <typeparam name="TEntity">Тип сущьности</typeparam>
+    /// <typeparam name="TFilter">Тип фильтра</typeparam>
     public interface IReadService<TEntity, in TFilter>
         where TEntity : class
         where TFilter : class

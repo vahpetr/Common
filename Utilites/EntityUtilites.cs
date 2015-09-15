@@ -42,6 +42,11 @@ namespace Common.Utilites
                 }
             }
         }
+
+        public static PropertyInfo[] Get(TEntity entity)
+        {
+            return KeyProps;
+        }
     }
 
     public static class EntityGetKeyExpressionUtilites<TEntity> where TEntity : class

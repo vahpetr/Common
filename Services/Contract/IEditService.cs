@@ -1,65 +1,65 @@
-using System.Threading.Tasks;
+п»їusing System.Threading.Tasks;
 
 namespace Common.Services.Contract
 {
     /// <summary>
-    /// Интерфейс сервиса редактирования данных
+    /// РРЅС‚РµСЂС„РµР№СЃ СЃРµСЂРІРёСЃР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РґР°РЅРЅС‹С…
     /// </summary>
-    /// <typeparam name="TEntity">Сущьность</typeparam>
+    /// <typeparam name="TEntity">РўРёРї СЃСѓС‰СЊРЅРѕСЃС‚Рё</typeparam>
     public interface IEditService<in TEntity>
         where TEntity : class
     {
         /// <summary>
-        /// Добавить граф сущности
+        /// Р”РѕР±Р°РІРёС‚СЊ РіСЂР°С„ СЃСѓС‰РЅРѕСЃС‚Рё
         /// </summary>
-        /// <param name="entity">Новаый граф сущности</param>
+        /// <param name="entity">РќРѕРІР°С‹Р№ РіСЂР°С„ СЃСѓС‰РЅРѕСЃС‚Рё</param>
         void Add(TEntity entity);
 
         /// <summary>
-        /// Асинхронно добавить граф сущности
+        /// РђСЃРёРЅС…СЂРѕРЅРЅРѕ РґРѕР±Р°РІРёС‚СЊ РіСЂР°С„ СЃСѓС‰РЅРѕСЃС‚Рё
         /// </summary>
-        /// <param name="entity">Новаый граф сущности</param>
+        /// <param name="entity">РќРѕРІР°С‹Р№ РіСЂР°С„ СЃСѓС‰РЅРѕСЃС‚Рё</param>
         /// <returns></returns>
         Task AddAsync(TEntity entity);
 
         /// <summary>
-        /// Обновить граф сущности
+        /// РћР±РЅРѕРІРёС‚СЊ РіСЂР°С„ СЃСѓС‰РЅРѕСЃС‚Рё
         /// </summary>
-        /// <param name="currEntity">Обновляемая сущность</param>
-        /// <param name="prevEntity">Сущность из базы данных</param>
+        /// <param name="currEntity">РћР±РЅРѕРІР»СЏРµРјР°СЏ СЃСѓС‰РЅРѕСЃС‚СЊ</param>
+        /// <param name="prevEntity">РЎСѓС‰РЅРѕСЃС‚СЊ РёР· Р±Р°Р·С‹ РґР°РЅРЅС‹С…</param>
         void Update(TEntity currEntity, TEntity prevEntity);
 
         /// <summary>
-        /// Асинхронно обновить граф сущности
+        /// РђСЃРёРЅС…СЂРѕРЅРЅРѕ РѕР±РЅРѕРІРёС‚СЊ РіСЂР°С„ СЃСѓС‰РЅРѕСЃС‚Рё
         /// </summary>
-        /// <param name="currEntity">Обновляемая сущность</param>
-        /// <param name="prevEntity">Сущность из базы данных</param>
+        /// <param name="currEntity">РћР±РЅРѕРІР»СЏРµРјР°СЏ СЃСѓС‰РЅРѕСЃС‚СЊ</param>
+        /// <param name="prevEntity">РЎСѓС‰РЅРѕСЃС‚СЊ РёР· Р±Р°Р·С‹ РґР°РЅРЅС‹С…</param>
         /// <returns></returns>
         Task UpdateAsync(TEntity currEntity, TEntity prevEntity);
 
         /// <summary>
-        /// Удалить сущность
+        /// РЈРґР°Р»РёС‚СЊ СЃСѓС‰РЅРѕСЃС‚СЊ
         /// </summary>
-        /// <param name="entity">Сущность</param>
+        /// <param name="entity">РЎСѓС‰РЅРѕСЃС‚СЊ</param>
         void Remove(TEntity entity);
 
         /// <summary>
-        /// Асинхронно удалить сущность
+        /// РђСЃРёРЅС…СЂРѕРЅРЅРѕ СѓРґР°Р»РёС‚СЊ СЃСѓС‰РЅРѕСЃС‚СЊ
         /// </summary>
-        /// <param name="entity">Сущность</param>
+        /// <param name="entity">РЎСѓС‰РЅРѕСЃС‚СЊ</param>
         /// <returns></returns>
         Task RemoveAsync(TEntity entity);
 
         /// <summary>
-        /// Сохранить все изменения
+        /// РЎРѕС…СЂР°РЅРёС‚СЊ РІСЃРµ РёР·РјРµРЅРµРЅРёСЏ
         /// </summary>
-        /// <returns>Количество изменённых строк в базе</returns>
+        /// <returns>РљРѕР»РёС‡РµСЃС‚РІРѕ РёР·РјРµРЅС‘РЅРЅС‹С… СЃС‚СЂРѕРє РІ Р±Р°Р·Рµ</returns>
         int Commit();
 
         /// <summary>
-        /// Асинхронно сохранить все изменения
+        /// РђСЃРёРЅС…СЂРѕРЅРЅРѕ СЃРѕС…СЂР°РЅРёС‚СЊ РІСЃРµ РёР·РјРµРЅРµРЅРёСЏ
         /// </summary>
-        /// <returns>Количество изменённых строк в базе</returns>
+        /// <returns>РљРѕР»РёС‡РµСЃС‚РІРѕ РёР·РјРµРЅС‘РЅРЅС‹С… СЃС‚СЂРѕРє РІ Р±Р°Р·Рµ</returns>
         Task<int> CommitAsync();
     }
 }

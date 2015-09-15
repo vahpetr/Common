@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.Models.Filters
+namespace Common.Filters
 {
     /// <summary>
     /// Пэйджинг
