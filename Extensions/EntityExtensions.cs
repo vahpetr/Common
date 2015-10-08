@@ -9,13 +9,12 @@ namespace Common.Extensions
 {
     public static class EntityExtensions
     {
-        public static TEntity Find<TEntity>(
-           this IQueryable<TEntity> source,
-           params object[] keys)
+        private static Expression<Func<TEntity, bool>> GetExpression<TEntity>(
+           params object[] key)
            where TEntity : class
         {
             var keyProps = EntityUtilites<TEntity>.KeyProps;
-            if (keys.Count() != keyProps.Count()) return null;
+            if (key.Count() != keyProps.Count()) return null;
 
             var entityType = typeof(TEntity);
             var entityParameter = Expression.Parameter(entityType, "p");
@@ -28,7 +27,7 @@ namespace Common.Extensions
                 var genericType = typeof(TypeUtilites<>).MakeGenericType(property.Type);
                 var tryConvertValue = genericType.GetMethod("TryConvertValue",
                     new[] { typeof(object), property.Type.MakeByRefType() });
-                object[] args = { keys[i++], null };
+                object[] args = { key[i++], null };
                 var result = (bool)tryConvertValue.Invoke(null, args);
                 if (!result) return null;
                 var constant = Expression.Constant(args[1]);
@@ -39,10 +38,38 @@ namespace Common.Extensions
             var body = expressions.Aggregate(Expression.And);
             var expression = Expression.Lambda<Func<TEntity, bool>>(body, entityParameter);
 
+            return expression;
+        }
+
+        public static TEntity Find<TEntity>(
+           this IQueryable<TEntity> source,
+           params object[] key)
+           where TEntity : class
+        {
+            var expression = GetExpression<TEntity>(key);
+
             var call = Expression.Call(
                 typeof(Queryable),
                 "FirstOrDefault",
-                new[] { entityType },
+                new[] { source.ElementType },
+                source.Expression,
+                Expression.Quote(expression)
+                );
+
+            return source.Provider.Execute<TEntity>(call);
+        }
+
+        public static TEntity Exist<TEntity>(
+           this IQueryable<TEntity> source,
+           params object[] key)
+           where TEntity : class
+        {
+            var expression = GetExpression<TEntity>(key);
+
+            var call = Expression.Call(
+                typeof(Queryable),
+                "Any",
+                new[] { source.ElementType },
                 source.Expression,
                 Expression.Quote(expression)
                 );
@@ -63,15 +90,32 @@ namespace Common.Extensions
             return EntityIdentityUtilites<TEntity>.Identity(entity);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void FillKey<TEntity>(this TEntity entity, params object[] key) where TEntity : class
+        {
+            EntityFillKeyUtilite<TEntity>.Mapper(key, entity);
+        }
+
         public static TEntity Find<TEntity>(
             this IEnumerable<TEntity> source,
-            params object[] keys)
+            params object[] key)
             where TEntity : class
         {
             var keyProps = EntityUtilites<TEntity>.KeyProps;
-            if (keys.Count() != keyProps.Count()) return null;
+            if (key.Count() != keyProps.Count()) return null;
             var keyEqual = EntityKeyEqualUtilites<TEntity>.KeyEqual;
-            return source.FirstOrDefault(p => keyEqual(p, keys));
+            return source.FirstOrDefault(p => keyEqual(p, key));
+        }
+
+        public static bool Exist<TEntity>(
+            this IEnumerable<TEntity> source,
+            params object[] key)
+            where TEntity : class
+        {
+            var keyProps = EntityUtilites<TEntity>.KeyProps;
+            if (key.Count() != keyProps.Count()) return false;
+            var keyEqual = EntityKeyEqualUtilites<TEntity>.KeyEqual;
+            return source.Any(p => keyEqual(p, key));
         }
     }
 }

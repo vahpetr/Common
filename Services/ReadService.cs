@@ -111,6 +111,27 @@ namespace Common.Services
         }
 
         /// <summary>
+        /// Проверить существуют ли сущности
+        /// </summary>
+        /// <param name="key">Ключ</param>
+        /// <returns>Логическое значение</returns>
+        public virtual bool Exist(params object[] key)
+        {
+            return repository.Value.Exist(key);
+        }
+
+        /// <summary>
+        /// Асинхронно проверить существуют ли сущности
+        /// </summary>
+        /// <param name="key">Ключ</param>
+        /// <returns>Логическое значение</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Task<bool> ExistAsync(params object[] key)
+        {
+            return Task.FromResult(repository.Value.Exist(key));
+        }
+
+        /// <summary>
         /// Получить количество сущностей
         /// </summary>
         /// <param name="filter">Фильтр</param>

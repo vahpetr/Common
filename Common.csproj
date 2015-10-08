@@ -69,6 +69,7 @@
     <Compile Include="Services\SecurityService.cs" />
     <Compile Include="Services\TransactionService.cs" />
     <Compile Include="Utilites\EntityUtilites.cs" />
+    <Compile Include="Utilites\ExpressionUtilites.cs" />
     <Compile Include="Utilites\MappingUtilites.cs" />
     <Compile Include="Utilites\ObjectUtilites.cs" />
     <Compile Include="Utilites\TypeUtilites.cs" />

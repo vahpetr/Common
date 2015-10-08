@@ -32,7 +32,7 @@ namespace Common.Services
         /// <summary>
         /// Завершить транзакцию
         /// </summary>
-        public void Commit()
+        public void Complete()
         {
             transaction.Complete();
             transaction.Dispose();

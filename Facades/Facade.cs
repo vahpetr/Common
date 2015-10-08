@@ -52,7 +52,7 @@ namespace Common.Facades
             {
                 await edit.Value.AddAsync(entity);
                 await edit.Value.CommitAsync();
-                transaction.Value.Commit();
+                transaction.Value.Complete();
             }
             catch (Exception)
             {
@@ -69,7 +69,7 @@ namespace Common.Facades
             {
                 await edit.Value.UpdateAsync(currEntity, prevEntity);
                 await edit.Value.CommitAsync();
-                transaction.Value.Commit();
+                transaction.Value.Complete();
             }
             catch (Exception)
             {
@@ -88,7 +88,7 @@ namespace Common.Facades
             {
                 await edit.Value.RemoveAsync(entity);
                 await edit.Value.CommitAsync();
-                transaction.Value.Commit();
+                transaction.Value.Complete();
             }
             catch (Exception)
             {

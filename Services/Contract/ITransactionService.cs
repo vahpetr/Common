@@ -1,5 +1,8 @@
 ﻿namespace Common.Services.Contract
 {
+    /// <summary>
+    /// Сервис транзакции
+    /// </summary>
     public interface ITransactionService
     {
         /// <summary>
@@ -10,7 +13,7 @@
         /// <summary>
         /// Завершить транзакцию
         /// </summary>
-        void Commit();
+        void Complete();
 
         /// <summary>
         /// Отменить транзакцию

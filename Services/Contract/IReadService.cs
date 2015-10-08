@@ -16,7 +16,7 @@ namespace Common.Services.Contract
         /// <summary>
         /// Получить сущность по номеру
         /// </summary>
-        /// <param name="key">Ключ cущности</param>
+        /// <param name="key">Ключ</param>
         /// <returns>Сущность</returns>
         TEntity Get(params object[] key);
 
@@ -68,6 +68,20 @@ namespace Common.Services.Contract
         /// <param name="filter">Фильтр</param>
         /// <returns>Логическое значение</returns>
         Task<bool> ExistAsync(TFilter filter);
+
+        /// <summary>
+        /// Проверить существуют ли сущности
+        /// </summary>
+        /// <param name="key">Ключ cущности</param>
+        /// <returns>Логическое значение</returns>
+        bool Exist(params object[] key);
+
+        /// <summary>
+        /// Асинхронно проверить существуют ли сущности
+        /// </summary>
+        /// <param name="key">Ключ cущности</param>
+        /// <returns>Логическое значение</returns>
+        Task<bool> ExistAsync(params object[] key);
 
         /// <summary>
         /// Получить количество сущностей

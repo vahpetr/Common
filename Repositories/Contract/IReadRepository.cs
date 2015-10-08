@@ -17,14 +17,14 @@ namespace Common.Repositories.Contract
         /// <summary>
         /// Получить сущность
         /// </summary>
-        /// <param name="key">Ключ cущности</param>
+        /// <param name="key">Ключ</param>
         /// <returns>Сущность</returns>
         TEntity Get(params object[] key);
 
         /// <summary>
         /// Асинхронно получить сущность
         /// </summary>
-        /// <param name="key">Ключ cущности</param>
+        /// <param name="key">Ключ</param>
         /// <returns>Сущность</returns>
         Task<TEntity> GetAsync(params object[] key);
 
@@ -69,6 +69,20 @@ namespace Common.Repositories.Contract
         /// <param name="filter">Фильтр</param>
         /// <returns>Логическое значение</returns>
         Task<bool> ExistAsync(TFilter filter);
+
+        /// <summary>
+        /// Проверить существуют ли сущности
+        /// </summary>
+        /// <param name="key">Ключ</param>
+        /// <returns>Логическое значение</returns>
+        bool Exist(params object[] key);
+
+        /// <summary>
+        /// Асинхронно проверить существуют ли сущности
+        /// </summary>
+        /// <param name="key">Ключ</param>
+        /// <returns>Логическое значение</returns>
+        Task<bool> ExistAsync(params object[] key);
 
         /// <summary>
         /// Получить количество сущностей

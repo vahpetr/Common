@@ -7,7 +7,7 @@ namespace Common.Repositories.Contract
     /// <summary>
     /// Интерфейс храналища редактирования данных
     /// </summary>
-    /// <typeparam name="TEntity">Тип сущьностит</typeparam>
+    /// <typeparam name="TEntity">Тип сущьностит </typeparam>
     public interface IEditRepository<TEntity>
         where TEntity : class
     {
@@ -35,6 +35,12 @@ namespace Common.Repositories.Contract
         /// </summary>
         /// <param name="entity">Сущность</param>
         void Remove(TEntity entity);
+
+        /// <summary>
+        /// Удалить сущность
+        /// </summary>
+        /// <param name="key">Ключ</param>
+        void Remove(params object[] key);
 
         /// <summary>
         /// Сохранить все изменения

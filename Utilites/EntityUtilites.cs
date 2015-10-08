@@ -194,4 +194,42 @@ namespace Common.Utilites
             KeyEqual = EntityKeyEqualExpressionUtilites<TEntity>.KeyEqualExpression.Compile();
         }
     }
+
+    public static class EntityFillKeyExpressionUtilite<TTo> where TTo : class
+    {
+        public static readonly Expression<Action<object[], TTo>> Mapper;
+
+        static EntityFillKeyExpressionUtilite()
+        {
+            var type = typeof(TTo);
+            var entity = Expression.Parameter(type, "entity");
+            var array = Expression.Parameter(typeof(object[]), "key");
+            var expressions = new List<Expression>();
+            var props = EntityUtilites<TTo>.KeyProps;
+
+            var i = 0;
+            foreach (var prop in props)
+            {
+                var value = Expression.ArrayIndex(array, Expression.Constant(i++));
+                var convert = Expression.Convert(value, prop.PropertyType);
+                var field = Expression.Property(entity, prop);
+                var assing = Expression.Assign(field, convert);
+                expressions.Add(assing);
+            }
+
+            var block = Expression.Block(expressions);
+
+            Mapper = Expression.Lambda<Action<object[], TTo>>(block, new[] { array, entity });
+        }
+    }
+
+    public static class EntityFillKeyUtilite<TTo> where TTo : class
+    {
+        public static readonly Action<object[], TTo> Mapper;
+
+        static EntityFillKeyUtilite()
+        {
+            Mapper = EntityFillKeyExpressionUtilite<TTo>.Mapper.Compile();
+        }
+    }
 }
