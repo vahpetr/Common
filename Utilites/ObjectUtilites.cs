@@ -170,14 +170,14 @@ namespace Common.Utilites
         }
 
         /// <summary>
-        /// Конвертировать один тип в другой
+        /// Накатить один объект на другой
         /// </summary>
-        /// <typeparam name="TFrom">Тит из которого конвертируем</typeparam>
-        /// <typeparam name="TTo">Тип в который конвертируем</typeparam>
-        /// <param name="from">Объект из которого конвертируем</param>
-        /// <param name="to">Объект в который конвертируем</param>
+        /// <typeparam name="TFrom">Тит из которого берём значения</typeparam>
+        /// <typeparam name="TTo">Тип на кторый накатываем значения</typeparam>
+        /// <param name="from">Объект из которого берём значения</param>
+        /// <param name="to">Объект на кторый накатываем значения</param>
         /// <returns></returns>
-        public static TTo Convert<TFrom, TTo>(TFrom from, TTo to)
+        public static TTo Rolled<TFrom, TTo>(TFrom from, TTo to)
         {
             var fromType = typeof(TFrom);
             var toType = typeof(TTo);

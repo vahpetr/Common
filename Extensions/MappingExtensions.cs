@@ -32,9 +32,9 @@ namespace Common.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TTo Convert<TFrom, TTo>(this TFrom from, TTo to)
+        public static TTo Rolled<TFrom, TTo>(this TFrom from, TTo to)
         {
-            return ObjectUtilites.Convert(from, to);
+            return ObjectUtilites.Rolled(from, to);
         }
     }
 }

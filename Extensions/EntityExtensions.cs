@@ -96,6 +96,12 @@ namespace Common.Extensions
             EntityFillKeyUtilite<TEntity>.Mapper(key, entity);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TEntity Init<TEntity>(this object[] key) where TEntity : class
+        {
+            return EntityInitUtilite<TEntity>.Mapper(key);
+        }
+
         public static TEntity Find<TEntity>(
             this IEnumerable<TEntity> source,
             params object[] key)

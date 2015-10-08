@@ -14,7 +14,7 @@ namespace Common.Utilites
 
         static EntityUtilites()
         {
-            var props = typeof (TEntity).GetProperties();
+            var props = typeof (TEntity).GetProperties().Where(p => p.CanRead);
             var keys = props.Where(p => p.GetCustomAttributes(typeof (KeyAttribute), true).Any());
             var list = new List<Tuple<int, PropertyInfo>>(4);
 
@@ -230,6 +230,40 @@ namespace Common.Utilites
         static EntityFillKeyUtilite()
         {
             Mapper = EntityFillKeyExpressionUtilite<TTo>.Mapper.Compile();
+        }
+    }
+
+    public static class EntityInitExpressionUtilite<TTo> where TTo : class
+    {
+        public static readonly Expression<Func<object[], TTo>> Mapper;
+
+        static EntityInitExpressionUtilite()
+        {
+            var type = typeof(TTo);
+            var array = Expression.Parameter(typeof(object[]));
+            var bindings = new List<MemberBinding>();
+            var props = EntityUtilites<TTo>.KeyProps;
+
+            var i = 0;
+            foreach (var prop in props)
+            {
+                var body = Expression.ArrayIndex(array, Expression.Constant(i++));
+                var convert = Expression.Convert(body, prop.PropertyType);
+                bindings.Add(Expression.Bind(prop, convert));
+            }
+
+            Mapper = Expression.Lambda<Func<object[], TTo>>(Expression.MemberInit(Expression.New(type), bindings),
+                new[] {array});
+        }
+    }
+
+    public static class EntityInitUtilite<TTo> where TTo : class
+    {
+        public static readonly Func<object[], TTo> Mapper;
+
+        static EntityInitUtilite()
+        {
+            Mapper = EntityInitExpressionUtilite<TTo>.Mapper.Compile();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Common.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Common.Utilites
@@ -14,8 +15,8 @@ namespace Common.Utilites
             //MapperExpression
             var from = typeof(TFrom);
             var to = typeof(TTo);
-            var fromProps = from.GetProperties();
-            var toProps = to.GetProperties();
+            var fromProps = from.GetProperties().Where(p => p.CanRead);
+            var toProps = to.GetProperties().Where(p => p.CanWrite);
             var parameter = Expression.Parameter(from);
             var bindings = new List<MemberAssignment>();
 
@@ -53,7 +54,7 @@ namespace Common.Utilites
             var type = typeof(TTo);
             var parameter = Expression.Parameter(typeof(Dictionary<string, object>));
             var bindings = new List<MemberBinding>();
-            var props = type.GetProperties();
+            var props = type.GetProperties().Where(p => p.CanWrite);
 
             foreach (var prop in props)
             {
