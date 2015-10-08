@@ -59,7 +59,7 @@ namespace Common.Extensions
             return source.Provider.Execute<TEntity>(call);
         }
 
-        public static TEntity Exist<TEntity>(
+        public static bool Exist<TEntity>(
            this IQueryable<TEntity> source,
            params object[] key)
            where TEntity : class
@@ -74,7 +74,7 @@ namespace Common.Extensions
                 Expression.Quote(expression)
                 );
 
-            return source.Provider.Execute<TEntity>(call);
+            return source.Provider.Execute<bool>(call);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
