@@ -11,7 +11,7 @@ namespace Common.Utilites
 
             if (!type.IsEnum && underlyingType == value.GetType())
             {
-                //TODO как по другому?
+                //как по другому?
                 obj = (T)Convert.ChangeType(value, type);
                 return true;
             }
@@ -34,6 +34,11 @@ namespace Common.Utilites
 
             obj = (T)args[1];
             return true;
+        }
+
+        public static T ParseEnum(object value)
+        {
+            return (T)Enum.Parse(typeof(T), value.ToString());
         }
     }
 }

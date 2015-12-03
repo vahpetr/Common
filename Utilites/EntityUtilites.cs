@@ -43,7 +43,7 @@ namespace Common.Utilites
             }
         }
 
-        public static PropertyInfo[] Get(TEntity entity)
+        public static PropertyInfo[] Get()
         {
             return KeyProps;
         }
@@ -139,11 +139,11 @@ namespace Common.Utilites
 
         static EntityKeyEqualExpressionUtilites()
         {
-            var entityType = typeof (TEntity);
+            var entityType = typeof(TEntity);
             var keys = EntityUtilites<TEntity>.KeyProps;
             var entityParameter = Expression.Parameter(entityType, "p");
             var expressions = new List<BinaryExpression>();
-            var keysParameter = Expression.Parameter(typeof (object[]), "keys");
+            var keysParameter = Expression.Parameter(typeof(object[]), "keys");
 
             var i = 0;
             foreach (var part in keys)
@@ -157,19 +157,20 @@ namespace Common.Utilites
                 MethodCallExpression parse;
                 UnaryExpression value;
 
-                if (property.Type == typeof (string))
+                if (property.Type == typeof(string))
                 {
                     value = Expression.Convert(toString, property.Type);
                 }
                 else if (property.Type.IsEnum)
                 {
-                    methodParse = Enum.GetUnderlyingType(property.Type).GetMethod("Parse", new[] {typeof (string)});
-                    parse = Expression.Call(methodParse, toString);
-                    value = Expression.Convert(parse, property.Type);
+                    var genericType = typeof(TypeUtilites<>).MakeGenericType(property.Type);
+                    var tryConvertValue = genericType.GetMethod("ParseEnum", new[] { property.Type });
+                    var result = Expression.Call(tryConvertValue, new Expression[] { arrayAccess });
+                    value = Expression.Convert(result, property.Type);
                 }
                 else
                 {
-                    methodParse = property.Type.GetMethod("Parse", new[] {typeof (string)});
+                    methodParse = property.Type.GetMethod("Parse", new[] { typeof(string) });
                     parse = Expression.Call(methodParse, toString);
                     value = Expression.Convert(parse, property.Type);
                 }

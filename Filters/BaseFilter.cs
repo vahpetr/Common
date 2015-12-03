@@ -26,7 +26,7 @@ namespace Common.Filters
             }
             set
             {
-                if (!string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     _sortBy = "Position";
                     return;
