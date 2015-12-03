@@ -7,6 +7,9 @@ namespace Common.Services
     /// </summary>
     public class SecurityService : ISecurityService
     {
-        
+        public SecurityService()
+        {
+            
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace Common.Services
     {
         protected readonly Lazy<TReadRepository> repository;
 
-        protected ReadService(Lazy<TReadRepository> repository)
+        public ReadService(Lazy<TReadRepository> repository)
         {
             this.repository = repository;
         }

@@ -9,6 +9,10 @@ namespace Common.Services
     /// </summary>
     public class TransactionService : ITransactionService, IDisposable
     {
+        public TransactionService()
+        {
+            
+        }
         private static readonly TransactionOptions options = new TransactionOptions
         {
             IsolationLevel = IsolationLevel.ReadCommitted,

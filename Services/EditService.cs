@@ -17,7 +17,7 @@ namespace Common.Services
     {
         protected readonly Lazy<TEditRepository> repository;
 
-        protected EditService(Lazy<TEditRepository> repository)
+        public EditService(Lazy<TEditRepository> repository)
         {
             this.repository = repository;
         }
