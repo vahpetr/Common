@@ -49,7 +49,7 @@ namespace Common.Services
         /// <param name="prevEntity">Сущность из базы данных</param>
         public virtual void Update(TEntity currEntity, TEntity prevEntity)
         {
-            repository.Value.Update(currEntity);
+            repository.Value.Update(currEntity, prevEntity);
         }
 
         /// <summary>

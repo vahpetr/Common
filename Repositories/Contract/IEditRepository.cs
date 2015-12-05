@@ -27,6 +27,13 @@ namespace Common.Repositories.Contract
         /// <summary>
         /// Обновить граф сущности
         /// </summary>
+        /// <param name="currEntity">Обновляемый граф сущности</param>
+        /// <param name="prevEntity">Текущая сущьность</param>
+        void Update(TEntity currEntity, TEntity prevEntity);
+
+        /// <summary>
+        /// Обновить граф сущности
+        /// </summary>
         /// <param name="entity">Обновляемый граф сущности</param>
         void Update(TEntity entity);
 
