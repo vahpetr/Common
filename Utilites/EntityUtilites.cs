@@ -14,8 +14,21 @@ namespace Common.Utilites
 
         static EntityUtilites()
         {
+            var type = typeof(TEntity);
             var props = typeof (TEntity).GetProperties().Where(p => p.CanRead);
             var keys = props.Where(p => p.GetCustomAttributes(typeof (KeyAttribute), true).Any());
+
+            if (!keys.Any())
+            {
+                var metadataType = type.GetCustomAttributes(typeof(MetadataTypeAttribute), true).OfType<MetadataTypeAttribute>().FirstOrDefault();
+
+                if (metadataType != null)
+                {
+                    keys = metadataType.MetadataClassType.GetProperties().Where(p => p.GetCustomAttributes(typeof(KeyAttribute), true).Any());
+                }
+                
+            }
+
             var list = new List<Tuple<int, PropertyInfo>>(4);
 
             foreach (var key in keys)

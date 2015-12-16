@@ -128,6 +128,17 @@ namespace Common.Utilites
         }
 
         /// <summary>
+        /// Получить редактируемые свойства
+        /// </summary>
+        /// <param name="type">Тип</param>
+        /// <returns>Свойства существующие в базе данных</returns>
+        public static IEnumerable<PropertyInfo> GetEditableProperties(Type type)
+        {
+            //только свойства в которые можно писать и которые можно читать есть в базе
+            return GetPrimitiveProps(type).Where(p => p.CanRead && p.CanWrite);
+        }
+
+        /// <summary>
         /// Очистка свойств объекта по типу
         /// </summary>
         /// <param name="obj">Объект</param>
@@ -139,18 +150,27 @@ namespace Common.Utilites
 
             var type = obj.GetType();
 
-            foreach (var prop in GetPrimitiveProps(type).Where(prop => prop.PropertyType == target))
+            var primitives = GetPrimitiveProps(type).Where(p => p.CanWrite && p.PropertyType == target);
+
+            foreach (var prop in primitives)
             {
                 prop.SetValue(obj, null);
             }
 
-            foreach (var value in GetComplexProps(type).Select(prop => prop.GetValue(obj)).Where(p => p != null && !references.Contains(p)))
+            var complexes = GetComplexProps(type)
+                .Where(p => p.CanWrite)
+                .Select(p => p.GetValue(obj))
+                .Where(p => p != null && !references.Contains(p));
+
+            foreach (var value in complexes)
             {
                 references.Add(value);
                 CleanPropertyByType(value, target, references);
             }
 
-            foreach (var prop in GetCollectionProps(type))
+            var collections = GetCollectionProps(type).Where(p => p.CanWrite);
+
+            foreach (var prop in collections)
             {
                 if (prop.PropertyType == target)
                 {
@@ -159,6 +179,8 @@ namespace Common.Utilites
                 else
                 {
                     var values = prop.GetValue(obj) as IEnumerable<object>;
+
+                    if(values == null) continue;
 
                     foreach (var value in values.Where(p => p != null && !references.Contains(p)))
                     {
@@ -206,9 +228,95 @@ namespace Common.Utilites
         /// <param name="b">Объект Б</param>
         /// <param name="comparer">Функция сравнения</param>
         /// <returns>Логическое значение</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool CompareDifferentObjects<TA, TB>(TA a, TB b, Func<TA, TB, bool> comparer)
         {
             return comparer(a, b);
+        }
+
+        /// <summary>
+        /// Сравнить два значения
+        /// </summary>
+        /// <param name="valueA">Значение А</param>
+        /// <param name="valueB">Значение Б</param>
+        /// <returns>Логическое значение</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool ValueComparer(object valueA, object valueB)
+        {
+            return valueA == valueB ||
+                   (valueA != null && valueA.Equals(valueB)) ||
+                   (valueB != null && valueB.Equals(valueA));
+        }
+
+        /// <summary>
+        /// Функция сравнения объектов
+        /// </summary>
+        /// <typeparam name="T">Тип объектов</typeparam>
+        /// <param name="oldItem">Предидущий объект</param>
+        /// <param name="newItem">Обновлённый объект</param>
+        /// <param name="props">Свойства объекта коллекции для сравнения</param>
+        /// <param name="functor">Дополнительное сравнение</param>
+        /// <returns>Логическое значение</returns>
+        public static bool ValueComparer<T>(T oldItem, T newItem, PropertyInfo[] props, Func<T, T, bool> functor = null)
+        {
+            if (oldItem == null && newItem == null) return true;
+            if (oldItem == null || newItem == null) return false;
+
+            object oldValue, newValue;
+            foreach (var prop in props)
+            {
+                oldValue = prop.GetValue(oldItem);
+                newValue = prop.GetValue(newItem);
+                if (ValueComparer(newValue, oldValue)) continue;
+                return false;
+            }
+            return functor == null || functor(oldItem, newItem);
+        }
+
+        /// <summary>
+        /// Функция сравнения коллекций
+        /// </summary>
+        /// <typeparam name="T">Тип коллекции</typeparam>
+        /// <param name="oldItems">Предидущая колекция</param>
+        /// <param name="newItems">Обновлённая колекция</param>
+        /// <param name="props">Свойства объекта коллекции для сравнения</param>
+        /// <param name="functor">Дополнительное сравнение</param>
+        /// <returns>Логическое значение</returns>
+        public static bool CollectionComparer<T>(IEnumerable<T> oldItems, IEnumerable<T> newItems, PropertyInfo[] props, Func<T, T, bool> functor = null)
+        {
+            var count = oldItems.Count();
+            if (count != newItems.Count()) return false;
+            if (count == 0) return true;
+            if (props.Length == 0) return true;
+
+            bool contain;
+            int i;
+            var found = new bool[count];
+            object oldValue, newValue;
+
+            foreach (var oldItem in oldItems)
+            {
+                contain = false;
+                i = -1;
+                foreach (var newItem in newItems)
+                {
+                    if (found[++i]) continue;
+                    foreach (var prop in props)
+                    {
+                        oldValue = prop.GetValue(oldItem);
+                        newValue = prop.GetValue(newItem);
+                        if (ValueComparer(newValue, oldValue)) continue;
+                        goto NextCompare;
+                    }
+                    found[i] = true;
+                    contain = functor == null || functor(oldItem, newItem);
+                    break;
+                NextCompare: continue;
+                }
+                if (contain) continue;
+                return false;
+            }
+            return true;
         }
     }
 }
